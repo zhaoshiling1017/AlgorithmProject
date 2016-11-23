@@ -15,29 +15,20 @@ import com.google.gson.reflect.TypeToken;
  * @email lenzhao@foxmail.com
  * @date2016-11-23 下午1:43:49
  */
-public class AuthUtil {
+public class AuthClient {
 
 	public static void main(String[] args) throws Exception {
-		String jsonData = "";
-		String key = DESCoder.initKey();
-		byte[] jsondataRSA = encrypt(jsonData.getBytes(UTF_8), key);
-		byte[] sign = produceSign(key);
-		System.out.println(decryptRD(jsondataRSA, sign));
+		
 	}
 
 	private static final String UTF_8 = "UTF-8";
 	private static  String publicKey = null;
-	private static String privateKey = null;
 
 	static{
 		try {
 			Object publicPath = Configs.getInstance().get("publickey");
-			Object privatePath = Configs.getInstance().get("privatekey");
 			if (null != publicPath) {
 				publicKey = FileUtil.readFile(String.valueOf(publicPath));
-			}
-			if (null != privatePath) {
-				privateKey = FileUtil.readFile(String.valueOf(privatePath));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +97,7 @@ public class AuthUtil {
 	 * @throws Exception
 	 */
 	private static String decryptRSA(byte[] str) throws Exception {
-		return new String(RSACoder.decryptByPrivateKey(str, privateKey));
+		return new String(RSACoder.decryptByPrivateKey(str, publicKey));
 	}
 	
 	/**
