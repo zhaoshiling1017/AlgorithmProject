@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -18,7 +19,14 @@ import com.google.gson.reflect.TypeToken;
 public class AuthServer {
 
 	public static void main(String[] args) throws Exception {
-		
+		JsonObject json = new JsonObject();
+		json.addProperty("userName", "18612700346");
+		json.addProperty("password", "123456");
+		String key = DESCoder.initKey();
+		byte[] sign = produceSign(key);
+		byte[] data = encrypt(json.toString().getBytes(UTF_8), key);
+		String jsondata = AuthClient.decryptRD(Coder.encryptBASE64(data), Coder.encryptBASE64(sign));
+		System.out.println(jsondata);
 	}
 
 	private static final String UTF_8 = "UTF-8";
@@ -59,7 +67,13 @@ public class AuthServer {
 		return DESCoder.encrypt(str, key);
 	}
 
-	
+	/**
+	 * RSA+DES解密
+	 * @param data
+	 * @param sign
+	 * @return
+	 * @throws Exception
+	 */
 	public static String decryptRD(byte[] data, byte[] sign) throws Exception {
 		Gson gson = new Gson();
 		String signDec = decryptRSA(sign);
@@ -68,15 +82,9 @@ public class AuthServer {
 		return decrypt(data, key);
 	}
 	
-	/**
-	 * RSA+DES解密
-	 * @param data
-	 * @param sign
-	 * @return
-	 * @throws Exception
-	 */
+	
 	public static String decryptRD(String data, String sign) throws Exception {
-		return decryptRD(data.getBytes(UTF_8), sign.getBytes(UTF_8));
+		return decryptRD(Coder.decryptBASE64(data), Coder.decryptBASE64(sign));
 	}
 
 	/**
@@ -86,7 +94,7 @@ public class AuthServer {
 	 * @throws Exception
 	 */
 	private static byte[] encryptRSA(byte[] bytes) throws Exception {
-		byte[] b = RSACoder.encryptByPublicKey(bytes, privateKey);
+		byte[] b = RSACoder.encryptByPrivateKey(bytes, privateKey);
 		return b;
 	}
 	
