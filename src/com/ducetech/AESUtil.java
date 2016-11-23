@@ -1,4 +1,4 @@
-package com.unicss;
+package com.ducetech;
 
 import java.security.Key;
 
@@ -32,6 +32,7 @@ import org.apache.commons.codec.binary.Base64;
  * @create Jul 17, 2012 6:35:36 PM 
  * @author 玄玉(http://blog.csdn/net/jadyer) 
  */  
+
 public class AESUtil {  
     //密钥算法   
     public static final String KEY_ALGORITHM = "AES";  

@@ -1,4 +1,4 @@
-package com.unicss;
+package com.ducetech;
 
 /************************************************
 MD5 算法的Java Bean
@@ -366,11 +366,12 @@ public class MD5 {
 
         public static void main(String args[]) {
                MD5 m = new MD5();
-                if (Array.getLength(args) == 0) {
-                        System.out.println("MD5(\"bjiamcall\"):"+m.getMD5ofStr("bjiamcall"));
+               /* if (Array.getLength(args) == 0) {
+                        System.out.println("MD5(\"bjiamcall\"):"+m.getMD5ofStr("bjiamcallopkl8bf6c48e-f95e-11e4-bf31-b7c9a9a2a54e"));
                 }else{ 
                         System.out.println("MD5(" + args[0] + ")=" + m.getMD5ofStr(args[0]));
-                }
+                }*/
+               System.out.println(m.getMD5ofStr("admin"));
         }
 
 } 

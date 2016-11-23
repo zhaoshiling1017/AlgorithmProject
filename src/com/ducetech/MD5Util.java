@@ -1,4 +1,4 @@
-package com.unicss;
+package com.ducetech;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
