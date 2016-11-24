@@ -26,6 +26,11 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
+import com.ducetech.auth.AuthClient;
+import com.ducetech.auth.Coder;
+import com.ducetech.auth.DESCoder;
+import com.google.gson.JsonObject;
+
 public class HttpUtil {
 	public static final int CONNECTION_TIMEOUT = 5000;
 	//httpclient post请求
@@ -139,15 +144,30 @@ public class HttpUtil {
 		 }
 		 return null;
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		JsonObject json = new JsonObject();
+		json.addProperty("userName", "18612700346");
+		json.addProperty("password", "ducetech2016");
+		String key = DESCoder.initKey();
+		byte[] sign = AuthClient.produceSign(key);
+		byte[] data = AuthClient.encrypt(json.toString().getBytes("UTF-8"), key);
+		
 		Map<String, String> paramMap = new HashMap<String, String>();
-		paramMap.put("sendno", "4294967");
+		paramMap.put("data", Coder.encryptBASE64(data));
+		paramMap.put("sign", Coder.encryptBASE64(sign));
+		String jsonStr = httpPostForJSON(paramMap, "http://127.0.0.1:9005/interface/login");
+		JSONObject obj = JSONObject.fromObject(jsonStr);
+		String data2 = obj.getString("data");
+		String sign2 = obj.getString("sign");
+		String result = AuthClient.decryptRD(data2, sign2);
+		System.out.println(result);
+		/*paramMap.put("sendno", "4294967");
 		paramMap.put("app_key", "f9393973ecc12ab885be62d1");
 		paramMap.put("receiver_type", "5");
 		paramMap.put("receiver_value", "020e613328d");
 		paramMap.put("msg_type", "2");
 		paramMap.put("msg_content", "{\"message\":\"自定义消息\"}");
 		paramMap.put("verification_code", "7f7cad1fdc1f1a4b16c0b13cc7184e29".toUpperCase());
-		System.out.println(httpPost(paramMap, "http://api.jpush.cn:8800/v2/push"));
+		System.out.println(httpPost(paramMap, "http://api.jpush.cn:8800/v2/push"));*/
 	}
 }
