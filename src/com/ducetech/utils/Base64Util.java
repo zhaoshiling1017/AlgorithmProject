@@ -1,4 +1,4 @@
-package com.ducetech;
+package com.ducetech.utils;
 
 
 

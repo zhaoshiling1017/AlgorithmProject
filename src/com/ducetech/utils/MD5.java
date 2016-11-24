@@ -1,4 +1,4 @@
-package com.ducetech;
+package com.ducetech.utils;
 
 /************************************************
 MD5 算法的Java Bean
