@@ -3,6 +3,7 @@ package com.ducetech.http;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -148,11 +149,14 @@ public class HttpUtil {
 		JsonObject json = new JsonObject();
 		json.addProperty("userName", "18612700346");
 		json.addProperty("password", "ducetech2016");
+		//json.addProperty("accessToken", "e91004b6-ddf9-496d-8cc9-37722b759541");
 		String key = DESCoder.initKey();
 		byte[] sign = AuthClient.produceSign(key);
 		byte[] data = AuthClient.encrypt(json.toString().getBytes("UTF-8"), key);
 		
 		Map<String, String> paramMap = new HashMap<String, String>();
+		//paramMap.put("data", URLEncoder.encode(Coder.encryptBASE64(data), "UTF-8"));
+		//paramMap.put("sign", URLEncoder.encode(Coder.encryptBASE64(sign), "UTF-8"));
 		paramMap.put("data", Coder.encryptBASE64(data));
 		paramMap.put("sign", Coder.encryptBASE64(sign));
 		String jsonStr = httpPostForJSON(paramMap, "http://127.0.0.1:9005/interface/login");
